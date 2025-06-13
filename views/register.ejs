@@ -88,6 +88,17 @@
               </button>
             </div>
             <span class="error-message" id="registerPasswordError"></span>
+
+            <!-- Password requirements banner positioned relative to password field -->
+            <div class="password-requirements" id="passwordBanner">
+              <strong>Password must contain:</strong>
+              <ul>
+                <li>At least 1 uppercase letter</li>
+                <li>At least 1 lowercase letter</li>
+                <li>At least 1 number</li>
+                <li>Minimum 8 characters</li>
+              </ul>
+            </div>
           </div>
 
           <button type="submit" class="auth-btn">CREATE ACCOUNT</button>
@@ -163,6 +174,7 @@
   .password-group {
     grid-column: 1 / -1;
     margin-bottom: 3rem;
+    position: relative;
   }
 
   .form-label {
@@ -227,6 +239,40 @@
     min-height: 1.5rem;
   }
 
+  /* Password requirements banner */
+  .password-requirements {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.5rem;
+    padding: 1rem;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 0.4rem;
+    box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.15);
+    font-size: 1.2rem;
+    width: 280px;
+    z-index: 10;
+    display: none;
+  }
+
+  .password-requirements strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #2c2c2c;
+  }
+
+  .password-requirements ul {
+    margin: 0;
+    padding-left: 1.2rem;
+    list-style-type: disc;
+  }
+
+  .password-requirements li {
+    margin-bottom: 0.2rem;
+    color: #666;
+  }
+
   .auth-btn {
     width: 100%;
     background: #000;
@@ -283,6 +329,13 @@
       grid-template-columns: 1fr;
       gap: 0;
     }
+
+    .password-requirements {
+      right: auto;
+      left: 0;
+      width: 100%;
+      max-width: none;
+    }
   }
 
   @media (max-width: 480px) {
@@ -298,134 +351,150 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    // Form validation functions
+    // Helper validators
     function validateEmail(email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
     }
-
     function validatePassword(password) {
-      return password.length >= 6;
+      return (
+        /[A-Z]/.test(password) &&
+        /[a-z]/.test(password) &&
+        /\d/.test(password) &&
+        password.length >= 8
+      );
     }
-
     function validateName(name) {
       return name.trim().length >= 2;
     }
-
     function validatePhone(phone) {
-      if (!phone) return true; // Optional field
-      const phoneRegex = /^[\+]?[0-9\s\-\(\)]{10,}$/;
-      return phoneRegex.test(phone);
+      // only digits, up to 11
+      return /^\d{0,11}$/.test(phone);
     }
 
-    function showError(fieldId, message) {
-      const errorElement = document.getElementById(fieldId + 'Error');
-      const inputElement = document.getElementById(fieldId);
-
-      errorElement.textContent = message;
-      inputElement.classList.add('error');
-    }
-
-    function clearError(fieldId) {
-      const errorElement = document.getElementById(fieldId + 'Error');
-      const inputElement = document.getElementById(fieldId);
-
-      errorElement.textContent = '';
-      inputElement.classList.remove('error');
-    }
-
-    // Register form validation
+    // ELEMENTS
+    const firstNameEl = document.getElementById('firstName');
+    const lastNameEl = document.getElementById('lastName');
+    const mobileEl = document.getElementById('mobile');
+    const registerEmailEl = document.getElementById('registerEmail');
+    const registerPasswordEl = document.getElementById('registerPassword');
     const registerForm = document.getElementById('registerForm');
-    registerForm.addEventListener('submit', function (e) {
-      const firstName = document.getElementById('firstName').value;
-      const lastName = document.getElementById('lastName').value;
-      const mobile = document.getElementById('mobile').value;
-      const email = document.getElementById('registerEmail').value;
-      const password = document.getElementById('registerPassword').value;
-      let isValid = true;
+    const passwordToggleBtn = document.getElementById('toggleRegisterPassword');
+    const passwordBanner = document.getElementById('passwordBanner');
 
-      // Clear previous errors
-      clearError('firstName');
-      clearError('lastName');
-      clearError('mobile');
-      clearError('registerEmail');
-      clearError('registerPassword');
+    // UTILS: show/clear errors
+    function showError(fieldEl, msg) {
+      const err = document.getElementById(fieldEl.id + 'Error');
+      err.textContent = msg;
+      fieldEl.classList.add('error');
+    }
+    function clearError(fieldEl) {
+      const err = document.getElementById(fieldEl.id + 'Error');
+      err.textContent = '';
+      fieldEl.classList.remove('error');
+    }
 
-      // Validate first name
-      if (!firstName) {
-        showError('firstName', 'First name is required');
-        isValid = false;
-      } else if (!validateName(firstName)) {
-        showError('firstName', 'First name must be at least 2 characters long');
-        isValid = false;
-      }
-
-      // Validate last name
-      if (!lastName) {
-        showError('lastName', 'Last name is required');
-        isValid = false;
-      } else if (!validateName(lastName)) {
-        showError('lastName', 'Last name must be at least 2 characters long');
-        isValid = false;
-      }
-
-      // Validate mobile (optional)
-      if (mobile && !validatePhone(mobile)) {
-        showError('mobile', 'Please enter a valid phone number');
-        isValid = false;
-      }
-
-      // Validate email
-      if (!email) {
-        showError('registerEmail', 'Email is required');
-        isValid = false;
-      } else if (!validateEmail(email)) {
-        showError('registerEmail', 'Please enter a valid email address');
-        isValid = false;
-      }
-
-      // Validate password
-      if (!password) {
-        showError('registerPassword', 'Password is required');
-        isValid = false;
-      } else if (!validatePassword(password)) {
-        showError(
-          'registerPassword',
-          'Password must be at least 6 characters long'
-        );
-        isValid = false;
-      }
-
-      // If validation fails, prevent form submission
-      if (!isValid) {
-        e.preventDefault();
-      }
-    });
-
-    // Password toggle functionality
-    const toggleRegisterPassword = document.getElementById(
-      'toggleRegisterPassword'
-    );
-    const registerPasswordInput = document.getElementById('registerPassword');
-
-    toggleRegisterPassword.addEventListener('click', function () {
-      if (registerPasswordInput.type === 'password') {
-        registerPasswordInput.type = 'text';
-        toggleRegisterPassword.textContent = 'HIDE';
-      } else {
-        registerPasswordInput.type = 'password';
-        toggleRegisterPassword.textContent = 'SHOW';
-      }
-    });
-
-    // Real-time validation (clear errors when user starts typing)
-    const inputs = document.querySelectorAll('.form-input');
-    inputs.forEach(input => {
-      input.addEventListener('input', function () {
-        if (this.classList.contains('error')) {
-          clearError(this.id);
-        }
+    // 1) Prevent digits in first/last name as you type
+    [firstNameEl, lastNameEl].forEach(el => {
+      el.addEventListener('input', () => {
+        // strip out any digits
+        el.value = el.value.replace(/\d+/g, '');
+        if (el.classList.contains('error')) clearError(el);
       });
+    });
+
+    // 2) Restrict mobile: only digits, max 11 characters
+    mobileEl.setAttribute('maxlength', 11);
+    mobileEl.addEventListener('input', () => {
+      // remove non‑digits
+      mobileEl.value = mobileEl.value.replace(/\D+/g, '');
+      if (mobileEl.classList.contains('error')) clearError(mobileEl);
+    });
+
+    // 3) Force email lowercase on the fly
+    registerEmailEl.addEventListener('input', () => {
+      const start = registerEmailEl.selectionStart;
+      registerEmailEl.value = registerEmailEl.value.toLowerCase();
+      registerEmailEl.setSelectionRange(start, start);
+      if (registerEmailEl.classList.contains('error'))
+        clearError(registerEmailEl);
+    });
+
+    // 4) Password show/hide functionality
+    passwordToggleBtn.addEventListener('click', function () {
+      const type =
+        registerPasswordEl.getAttribute('type') === 'password'
+          ? 'text'
+          : 'password';
+      registerPasswordEl.setAttribute('type', type);
+      passwordToggleBtn.textContent = type === 'password' ? 'SHOW' : 'HIDE';
+    });
+
+    // 5) Password requirements banner - positioned relative to password field
+    registerPasswordEl.addEventListener('focus', () => {
+      passwordBanner.style.display = 'block';
+    });
+
+    registerPasswordEl.addEventListener('blur', () => {
+      passwordBanner.style.display = 'none';
+    });
+
+    registerPasswordEl.addEventListener('input', () => {
+      if (registerPasswordEl.classList.contains('error'))
+        clearError(registerPasswordEl);
+    });
+
+    // 6) On submit: full validation
+    registerForm.addEventListener('submit', function (e) {
+      let valid = true;
+      // clear all
+      [
+        firstNameEl,
+        lastNameEl,
+        mobileEl,
+        registerEmailEl,
+        registerPasswordEl,
+      ].forEach(el => clearError(el));
+
+      // first name
+      if (!firstNameEl.value.trim()) {
+        showError(firstNameEl, 'First name is required');
+        valid = false;
+      } else if (!validateName(firstNameEl.value)) {
+        showError(firstNameEl, 'At least 2 characters');
+        valid = false;
+      }
+      // last name
+      if (!lastNameEl.value.trim()) {
+        showError(lastNameEl, 'Last name is required');
+        valid = false;
+      } else if (!validateName(lastNameEl.value)) {
+        showError(lastNameEl, 'At least 2 characters');
+        valid = false;
+      }
+      // mobile (optional)
+      if (mobileEl.value && !validatePhone(mobileEl.value)) {
+        showError(mobileEl, 'Only digits, up to 11');
+        valid = false;
+      }
+      // email
+      if (!registerEmailEl.value) {
+        showError(registerEmailEl, 'Email is required');
+        valid = false;
+      } else if (!validateEmail(registerEmailEl.value)) {
+        showError(registerEmailEl, 'Invalid email');
+        valid = false;
+      }
+      // password
+      if (!registerPasswordEl.value) {
+        showError(registerPasswordEl, 'Password is required');
+        valid = false;
+      } else if (!validatePassword(registerPasswordEl.value)) {
+        showError(registerPasswordEl, 'Does not meet requirements');
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
     });
   });
 </script>
