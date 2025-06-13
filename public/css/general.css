@@ -1,0 +1,109 @@
+html {
+  font-size: 62.5%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Futura PT", sans-serif;
+  font-weight: 400;
+  color: #1c1c1c;
+  overflow-x: hidden;
+}
+
+ion-icon {
+  --ionicon-stroke-width: 16px;
+}
+
+button {
+  border: none;
+}
+
+/*******************************/
+/* GENERAL REUSABLE COMPONENTS */
+/*******************************/
+
+.nav-list-item:hover::after,
+.hero-img,
+.email-input {
+  width: 100%;
+}
+
+.clothing-item,
+.product-price,
+.social-links,
+.copyright {
+  color: #1c1c1ca6;
+}
+
+.nav-list-item::after,
+.clothing-item,
+.right-arrow-icon {
+  transition: all 0.3s;
+}
+
+.icon {
+  font-size: 2.4rem;
+  cursor: pointer;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid--1-cols {
+  grid-template-columns: 1fr;
+}
+
+.grid--3-cols {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid--4-cols {
+  grid-template-columns: 1fr 1fr 2fr 2fr;
+}
+
+.grid--5-cols {
+  grid-template-columns: 2fr repeat(3, 1fr);
+}
+
+.heading-secondary {
+  font-size: 1.6rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+
+.heading-primary {
+  text-align: center;
+  font-weight: 400;
+  font-size: 3.7rem;
+  letter-spacing: 1.3px;
+}
+
+.section-margin {
+  margin: 5.2rem 0;
+  text-align: center;
+}
+
+.margin-bottom-md {
+  margin-bottom: 3.6rem;
+}
+
+.margin-bottom-sm {
+  margin-bottom: 1.9rem;
+}
+
+.g-img {
+  width: 175px;
+  height: 262px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-bottom: 1.3rem;
+  transition: all 0.1s;
+  cursor: pointer;
+}

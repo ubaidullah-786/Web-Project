@@ -1,0 +1,555 @@
+@font-face {
+  font-family: futuraBold;
+  src: url('../assets/fonts/futura_n7.153f8fffad8e901382179997bbb87aa7a5ff33b3.woff2');
+}
+
+/*******************************/
+/* ANNOUNCEMENT, PREFERENCES, AND SUPPORT*/
+/*******************************/
+
+.announcement {
+  background-color: #1c1c1c;
+  padding: 1.2rem 1rem;
+}
+
+.announcement-text {
+  font-size: 1.2rem;
+  color: #fff;
+  text-align: center;
+  letter-spacing: 0.4px;
+}
+
+.msg-icon {
+  font-size: 3.2rem;
+  color: #fff;
+}
+
+.message-us {
+  background-color: #767676;
+  border-radius: 100px;
+  padding: 1.3rem 1.3rem 0.9rem 1.3rem;
+  cursor: pointer;
+  position: fixed;
+  right: 2.4%;
+  bottom: 7.2%;
+}
+
+.preferences {
+  background-color: #6aaae4;
+  position: fixed;
+  left: 1%;
+  bottom: 2%;
+  padding: 0.8rem 1.8rem 0.8rem 0;
+  border-radius: 10px;
+}
+
+/*******************************/
+/* HEADER */
+/*******************************/
+
+.header {
+  padding: 2.5rem 4.8rem 0;
+  column-gap: 3.2rem;
+  row-gap: 2.6rem;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.search-text {
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.logo {
+  width: 55%;
+  justify-self: center;
+  cursor: pointer;
+}
+
+.flag-account-cart {
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+  justify-self: end;
+}
+
+.flag {
+  width: 2rem;
+  height: 1.5rem;
+  background: url('https://mdbootstrap.com/img/svg/flags.png') -69px -1949px;
+  cursor: pointer;
+}
+
+/*******************************/
+/* NAVIGATION */
+/*******************************/
+
+.nav {
+  grid-column: 2;
+  justify-self: center;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  gap: 4.2rem;
+}
+
+.nav-list-item {
+  position: relative;
+  user-select: none;
+  height: 4.7rem;
+}
+
+.nav-list-item::after {
+  content: '';
+  height: 2px;
+  background-color: #000;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.nav-list-item:not(:hover)::after {
+  width: 0;
+}
+
+/*******************************/
+/* SHOPPING MENUS */
+/*******************************/
+
+.shop-menu {
+  position: absolute;
+  z-index: 1;
+  background-color: #fff;
+  min-width: 100vw;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-52.5%);
+  padding: 4rem 80%;
+  overflow-y: scroll;
+  height: 850%;
+  cursor: auto;
+}
+.clothing-list {
+  list-style: none;
+  display: flex;
+  gap: 1.1rem;
+  flex-direction: column;
+}
+
+.clothing-item {
+  cursor: pointer;
+  font-size: 1.4rem;
+  line-height: 1.5;
+}
+
+.clothing-item:hover {
+  color: #1c1c1c;
+}
+
+.cloth-fig {
+  justify-self: center;
+}
+
+.fig-img {
+  width: 300px;
+  margin-bottom: 1.4rem;
+  cursor: pointer;
+  height: 30.8rem;
+}
+
+.fig-description {
+  text-align: center;
+  cursor: pointer;
+  padding-bottom: 3rem;
+}
+
+#sale-clothing {
+  justify-self: center;
+}
+
+#shop > div,
+#sale > div {
+  display: none;
+}
+
+#shop:hover > div,
+#sale:hover > div {
+  display: grid;
+}
+
+.cols-3 {
+  grid-template-columns: 0.5fr 1fr 1fr;
+  transform: translateX(-58.3%);
+  padding-left: 5.2rem;
+}
+
+.cols-3 .cloth-fig:last-child {
+  justify-self: start;
+}
+
+/*******************************/
+/* HERO SECTION */
+/*******************************/
+
+.hero {
+  position: relative;
+}
+
+.hero-text-box {
+  color: #fff;
+  position: absolute;
+  top: 0;
+  /* left:50% */
+  top: 30%;
+  right: 12%;
+}
+
+.hero-heading {
+  font-size: 4.2rem;
+  letter-spacing: 1.6px;
+}
+
+.hero-description {
+  font-size: 1.9rem;
+  margin-top: 2rem;
+  letter-spacing: 0.7px;
+}
+
+.hero-cta {
+  color: #000;
+  background-color: #fff;
+}
+
+.btn {
+  padding: 1.3rem 2.8rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-top: 3.4rem;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+}
+
+/*******************************/
+/* PRODUCT ARTICLES SECTION */
+/*******************************/
+
+.right-arrow-icon {
+  background-color: #fff;
+  padding: 1.3rem;
+  border-radius: 100px;
+  display: inline-block;
+  position: absolute;
+  right: 2%;
+  top: 30%;
+  box-shadow: 0 0 5px 2px rgb(0, 0, 0, 0.1);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.add-to-cart {
+  position: absolute;
+  bottom: 30%;
+  right: 5%;
+  padding: 0.6rem;
+  background-color: #fff;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease-in-out;
+}
+
+.add-icon {
+  font-size: 2rem;
+  background-color: #fff;
+  display: block;
+  transition: all 0.2s ease-in-out;
+}
+
+.add-to-cart:hover .add-icon {
+  transform: rotate(90deg);
+}
+
+.product-card:hover .add-to-cart,
+.article-carousal:hover ~ .right-arrow-icon {
+  opacity: 1;
+  visibility: visible;
+}
+
+.product-card:not(:hover) .add-to-cart {
+  transform: translateY(12%);
+}
+
+.articles {
+  padding: 0 4.6rem;
+  position: relative;
+}
+
+.article-carousal {
+  display: flex;
+  gap: 2.3rem;
+  text-align: center;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  cursor: grab;
+}
+
+.product-card {
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.product-price {
+  margin-top: 0.7rem;
+  margin-bottom: 2rem;
+  cursor: grab !important;
+}
+
+.colors {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.color {
+  display: inline-block;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 100px;
+}
+
+.color-inside {
+  border: 2px solid #fff;
+  display: inline-block;
+  margin-top: 1px;
+  border-radius: 100px;
+  width: 1.9rem;
+  height: 1.9rem;
+  cursor: pointer;
+}
+
+.black {
+  background-color: #000;
+}
+
+.dark-green {
+  background-color: #4b5320;
+}
+
+.brown {
+  background-color: #5c4033;
+}
+
+.blue {
+  background-color: #0b0b44;
+}
+
+.view-btn {
+  background-color: #1c1c1c;
+  color: #fff;
+}
+
+/*******************************/
+/* PRODUCT CATEGORY SECTION */
+/*******************************/
+
+.articles {
+  gap: 3rem;
+}
+
+.category-img {
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.category-text {
+  font-size: 2.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.category-shirt,
+.category-outerwear,
+.category-knit {
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/*******************************/
+/* ABOUT SECTION */
+/*******************************/
+
+.about-section {
+  position: relative;
+  text-transform: uppercase;
+  text-align: start !important;
+}
+
+.about-text-box {
+  top: 25%;
+  left: 3.5%;
+}
+
+.about-text {
+  font-size: 2.5rem;
+  margin-bottom: 1.6rem;
+}
+
+.about-heading {
+  font-family: futuraBold;
+  text-align: left !important;
+}
+
+/*******************************/
+/* REGULATIONS  SECTION */
+/*******************************/
+
+.reg-section {
+  display: flex;
+  justify-content: center;
+  gap: 7rem;
+}
+
+.box-icon {
+  font-size: 3rem;
+}
+
+.reg-box {
+  text-align: center;
+  width: 19%;
+}
+
+.easy-return {
+  width: 18%;
+}
+
+.reg-heading {
+  cursor: text !important ;
+  margin-top: 2rem;
+  margin-bottom: 1.2rem;
+}
+
+.reg-text {
+  font-size: 1.4rem;
+  line-height: 1.5;
+}
+
+/*******************************/
+/* FOOTER */
+/*******************************/
+
+.footer {
+  padding: 8.4rem 4.8rem 4.8rem;
+  background-color: #efefef;
+  column-gap: 12rem;
+}
+
+.email-input {
+  padding: 1.04rem 1.2rem;
+  border: 1px solid #cfcfcf;
+  background-color: inherit;
+  font-family: inherit;
+  font-size: 1.5rem;
+}
+
+.email-input:focus {
+  outline: none;
+  border-color: #1c1c1c;
+}
+
+.promo {
+  margin: 2rem 0;
+}
+
+.form-btn {
+  margin-top: 1.8rem;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.social-links {
+  display: flex;
+  gap: 3.6rem;
+  margin-top: 8rem;
+  font-size: 1.8rem;
+}
+
+.copyright {
+  font-size: 1.2rem;
+  letter-spacing: 0.5px;
+  margin-top: 5rem;
+}
+
+/* Product Images */
+
+.first-img {
+  background-image: url('/assets/img/first-img.jpg');
+}
+
+.first-img:hover {
+  background-image: url('/assets/img/first-img-hover.jpg');
+}
+
+.second-img {
+  background-image: url('/assets/img/second-img.jpg');
+}
+
+.second-img:hover {
+  background-image: url('/assets/img/second-img-hover.jpg');
+}
+
+.third-img {
+  background-image: url('/assets/img/third-img.jpg');
+}
+
+.third-img:hover {
+  background-image: url('/assets/img/third-img-hover.jpg');
+}
+
+.fourth-img {
+  background-image: url('/assets/img/fourth-img.jpg');
+}
+
+.fourth-img:hover {
+  background-image: url('/assets/img/fourth-img-hover.jpg');
+}
+
+.fifth-img {
+  background-image: url('/assets/img/fifth-img.jpg');
+}
+
+.fifth-img:hover {
+  background-image: url('/assets/img/fifth-img-hover.jpg');
+}
+
+.sixth-img {
+  background-image: url('/assets/img/sixth-img.jpg');
+}
+
+.sixth-img:hover {
+  background-image: url('/assets/img/sixth-img-hover.jpg');
+}
+
+.seventh-img {
+  background-image: url('/assets/img/seventh-img.jpg');
+}
+
+.seventh-img:hover {
+  background-image: url('/assets/img/seventh-img-hover.jpg');
+}
+
+.eigth-img {
+  background-image: url('/assets/img/eighth-img.jpg');
+}
+
+.eigth-img:hover {
+  background-image: url('/assets/img/eighth-img-hover.jpg');
+}

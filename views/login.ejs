@@ -1,0 +1,291 @@
+<div class="auth-page">
+  <div class="container">
+    <div class="auth-wrapper">
+      <!-- Login Section -->
+      <div class="auth-section">
+        <h2 class="section-title">LOGIN</h2>
+        <p class="section-subtitle">Already registered? Please login below:</p>
+
+        <form
+          id="loginForm"
+          class="auth-form"
+          method="POST"
+          action="/login"
+          novalidate
+        >
+          <div class="form-group">
+            <label for="loginEmail" class="form-label">Email</label>
+            <input
+              type="email"
+              id="loginEmail"
+              name="email"
+              class="form-input"
+              placeholder="Email"
+              required
+            />
+            <span class="error-message" id="loginEmailError"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="loginPassword" class="form-label">Password</label>
+            <input
+              type="password"
+              id="loginPassword"
+              name="password"
+              class="form-input"
+              placeholder="Password"
+              required
+            />
+            <span class="error-message" id="loginPasswordError"></span>
+          </div>
+
+          <button type="submit" class="auth-btn">SIGN IN</button>
+          <div class="auth-links">
+            <a href="/forgot-password" class="forgot-link">Forgot password?</a>
+            <p class="register-prompt">
+              Don't have an account?
+              <a href="/register" class="register-link">Create Account</a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .auth-page {
+    padding: 6rem 2rem;
+    max-width: 60rem;
+    margin: 0 auto;
+    color: #333;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .container {
+    width: 100%;
+  }
+
+  .auth-wrapper {
+    background: #fff;
+    padding: 4rem;
+    border-radius: 0.8rem;
+    box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.1);
+  }
+
+  .auth-section {
+    text-align: center;
+  }
+
+  .section-title {
+    font-size: 3.2rem;
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+    color: #2c2c2c;
+    margin-bottom: 1rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.6rem;
+    color: #666;
+    margin-bottom: 4rem;
+  }
+
+  .auth-form {
+    max-width: 40rem;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .form-group {
+    margin-bottom: 2.5rem;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #2c2c2c;
+    margin-bottom: 0.8rem;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 1.4rem 1.6rem;
+    border: 1px solid #ddd;
+    border-radius: 0.4rem;
+    font-size: 1.4rem;
+    background: #fff;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: #000;
+  }
+
+  .form-input::placeholder {
+    color: #999;
+  }
+
+  .form-input.error {
+    border-color: #e74c3c;
+  }
+
+  .error-message {
+    display: block;
+    color: #e74c3c;
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+    min-height: 1.5rem;
+  }
+
+  .auth-btn {
+    width: 100%;
+    background: #000;
+    color: white;
+    border: none;
+    padding: 1.6rem 2rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+    cursor: pointer;
+    border-radius: 0.4rem;
+    transition: background-color 0.3s ease;
+    margin-bottom: 2rem;
+  }
+
+  .auth-btn:hover {
+    background: #333;
+  }
+
+  .auth-links {
+    text-align: center;
+  }
+
+  .forgot-link {
+    color: #666;
+    text-decoration: underline;
+    font-size: 1.4rem;
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+
+  .forgot-link:hover {
+    color: #000;
+  }
+
+  .register-prompt {
+    font-size: 1.4rem;
+    color: #666;
+    margin: 0;
+  }
+
+  .register-link {
+    color: #000;
+    text-decoration: underline;
+    font-weight: 500;
+  }
+
+  .register-link:hover {
+    color: #333;
+  }
+
+  @media (max-width: 768px) {
+    .auth-page {
+      padding: 4rem 1rem;
+    }
+
+    .auth-wrapper {
+      padding: 3rem 2rem;
+    }
+
+    .section-title {
+      font-size: 2.8rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .auth-wrapper {
+      padding: 2rem 1.5rem;
+    }
+
+    .section-title {
+      font-size: 2.4rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Form validation functions
+    function validateEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    function showError(fieldId, message) {
+      const errorElement = document.getElementById(fieldId + 'Error');
+      const inputElement = document.getElementById(fieldId);
+
+      errorElement.textContent = message;
+      inputElement.classList.add('error');
+    }
+
+    function clearError(fieldId) {
+      const errorElement = document.getElementById(fieldId + 'Error');
+      const inputElement = document.getElementById(fieldId);
+
+      errorElement.textContent = '';
+      inputElement.classList.remove('error');
+    }
+
+    // Login form validation
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', function (e) {
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      let isValid = true;
+
+      // Clear previous errors
+      clearError('loginEmail');
+      clearError('loginPassword');
+
+      // Validate email
+      if (!email) {
+        showError('loginEmail', 'Email is required');
+        isValid = false;
+        e.preventDefault();
+      } else if (!validateEmail(email)) {
+        showError('loginEmail', 'Please enter a valid email address');
+        isValid = false;
+        e.preventDefault();
+      }
+
+      // Validate password
+      if (!password) {
+        showError('loginPassword', 'Password is required');
+        isValid = false;
+        e.preventDefault();
+      }
+
+      // If validation fails, prevent form submission
+      if (!isValid) {
+        e.preventDefault();
+      }
+    });
+
+    // Real-time validation (clear errors when user starts typing)
+    const inputs = document.querySelectorAll('.form-input');
+    inputs.forEach(input => {
+      input.addEventListener('input', function () {
+        if (this.classList.contains('error')) {
+          clearError(this.id);
+        }
+      });
+    });
+  });
+</script>

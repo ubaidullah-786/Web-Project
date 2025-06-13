@@ -1,0 +1,20 @@
+{
+  "name": "web-project",
+  "version": "1.0.0",
+  "description": "E-commerce store",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "author": "ubaid",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-ejs-layouts": "^2.5.1",
+    "mongoose": "^8.15.2",
+    "morgan": "^1.10.0"
+  }
+}
