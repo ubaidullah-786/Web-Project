@@ -20,7 +20,7 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET || 'keyboard cat',
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24,
+      maxAge: 1000 * 120,
     },
     resave: false,
     saveUninitialized: false,
@@ -31,8 +31,9 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  res.locals.success = req.flash('success');
-  res.locals.danger = req.flash('danger');
+  const hasFlash = req.session && req.session.flash;
+  res.locals.success = hasFlash ? req.flash('success') : [];
+  res.locals.danger = hasFlash ? req.flash('danger') : [];
   res.locals.user = req.session.user || null;
   next();
 });
