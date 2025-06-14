@@ -3,6 +3,27 @@
   src: url('../assets/fonts/futura_n7.153f8fffad8e901382179997bbb87aa7a5ff33b3.woff2');
 }
 
+.flash {
+  max-width: 60rem;
+  margin: 2rem auto;
+  padding: 1rem;
+  border-radius: 0.4rem;
+  font-size: 1.4rem;
+}
+.flash-success {
+  background: #e6ffed;
+  border: 1px solid #2ecc71;
+  color: #27ae60;
+}
+.flash-danger {
+  background: #ffe6e6;
+  border: 1px solid #e74c3c;
+  color: #c0392b;
+}
+.flash p {
+  margin: 0.4rem 0;
+}
+
 /*******************************/
 /* ANNOUNCEMENT, PREFERENCES, AND SUPPORT*/
 /*******************************/
@@ -116,6 +137,10 @@
 
 .nav-list-item:not(:hover)::after {
   width: 0;
+}
+
+.nav-list-item.active::after {
+  width: 100%;
 }
 
 /*******************************/

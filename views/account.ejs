@@ -1,0 +1,281 @@
+<% if (user) { %>
+<div class="contact-page">
+  <div class="container">
+    <!-- Header -->
+    <div class="contact-header">
+      <h1 class="main-title">Welcome, <%= user.name %></h1>
+    </div>
+
+    <!-- Message -->
+    <section class="reach-us-section">
+      <h2 class="section-title">Welcome to your Ben Sherman account.</h2>
+    </section>
+
+    <!-- Logout Button (same style as Contact Us "STORE FINDER") -->
+    <div class="address-sections">
+      <button
+        class="store-finder-btn"
+        onclick="window.location.href='/logout';"
+        style="max-width: 12rem"
+      >
+        LOG OUT
+      </button>
+    </div>
+  </div>
+</div>
+<% } else { %>
+<div class="contact-page">
+  <div class="container">
+    <div class="contact-header">
+      <h1 class="main-title">
+        Please log in to your account to see your profile.
+      </h1>
+    </div>
+    <div class="address-sections">
+      <button
+        class="store-finder-btn"
+        onclick="window.location.href='/login';"
+        style="max-width: 12rem"
+      >
+        LOG IN
+      </button>
+    </div>
+  </div>
+</div>
+<% } %>
+
+<style>
+  .contact-page {
+    padding: 4rem 2rem;
+    max-width: 120rem;
+    margin: 0 auto;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .container {
+    width: 100%;
+    text-align: center;
+  }
+
+  .contact-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .main-title {
+    font-size: 3.6rem;
+    font-weight: 700;
+    letter-spacing: 0.2rem;
+    color: #2c2c2c;
+    margin: 0;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+    color: #2c2c2c;
+    margin-bottom: 2rem;
+  }
+
+  .reach-us-section {
+    margin-bottom: 4rem;
+  }
+
+  .contact-method {
+    margin-bottom: 2.5rem;
+  }
+
+  .method-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #2c2c2c;
+    margin-bottom: 1rem;
+    display: inline;
+  }
+
+  .method-description {
+    font-size: 1.3rem;
+    line-height: 1.6;
+    color: #555;
+    margin: 0;
+    display: inline;
+  }
+
+  .email-link {
+    color: #000;
+    text-decoration: underline;
+    font-weight: 500;
+  }
+
+  .email-link:hover {
+    color: #666;
+  }
+
+  .customer-care-section {
+    margin-bottom: 4rem;
+  }
+
+  .section-description {
+    font-size: 1.3rem;
+    color: #555;
+    margin-bottom: 2rem;
+  }
+
+  .contact-details {
+    margin-left: 0;
+    display: inline-block;
+    text-align: left;
+  }
+
+  .detail-item {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .detail-label {
+    font-weight: 600;
+    color: #2c2c2c;
+    min-width: 10rem;
+  }
+
+  .detail-value {
+    color: #555;
+    line-height: 1.5;
+  }
+
+  .phone-link {
+    color: #000;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .phone-link:hover {
+    text-decoration: underline;
+  }
+
+  .address-sections {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .address-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+    gap: 3rem;
+    margin-top: 2.5rem;
+  }
+
+  .address-card {
+    background: #f8f8f8;
+    padding: 2.5rem;
+    border-radius: 0.5rem;
+  }
+
+  .address-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+    color: #2c2c2c;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  .address-content {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    color: #555;
+    font-style: normal;
+  }
+
+  .store-finder-text {
+    font-size: 1.3rem;
+    color: #555;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+
+  .store-finder-btn {
+    background: #000;
+    color: white;
+    border: none;
+    padding: 1.2rem 2.4rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+    cursor: pointer;
+    border-radius: 0.3rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    transition: background-color 0.3s ease;
+    margin: 0 auto;
+  }
+
+  .store-finder-btn:hover {
+    background: #333;
+  }
+
+  .btn-icon {
+    font-size: 1.4rem;
+  }
+
+  @media (max-width: 768px) {
+    .contact-page {
+      padding: 2rem 1rem;
+    }
+
+    .main-title {
+      font-size: 2.8rem;
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+    }
+
+    .address-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .address-card {
+      padding: 2rem;
+    }
+
+    .contact-details {
+      margin-left: 0;
+    }
+
+    .detail-item {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .detail-label {
+      min-width: auto;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .main-title {
+      font-size: 2.4rem;
+    }
+
+    .method-title,
+    .method-description {
+      display: block;
+    }
+
+    .method-title {
+      margin-bottom: 0.5rem;
+    }
+  }
+</style>

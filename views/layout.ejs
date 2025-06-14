@@ -3,9 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-      🧿 Ben Sherman: Shop Shirts, Men's Clothing, Shoes & Accessories
-    </title>
+    <title>Ben Sherman: Shop Shirts, Men's Clothing, Shoes & Accessories</title>
     <link rel="preconnect" href="https://fonts.cdnfonts.com" />
     <link href="https://fonts.cdnfonts.com/css/futura-pt" rel="stylesheet" />
     <link rel="stylesheet" href="css/style.css" />
@@ -32,7 +30,11 @@
 
       <div class="flag-account-cart">
         <div class="flag" role="banner"></div>
-        <ion-icon class="icon" name="person-outline"></ion-icon>
+        <ion-icon
+          class="icon"
+          name="person-outline"
+          onclick="window.location.href='/account';"
+        ></ion-icon>
         <ion-icon class="icon" name="bag-outline"></ion-icon>
       </div>
       <nav class="nav">
@@ -48,17 +50,32 @@
             onclick="window.location.href='/contact-us';"
             style="width: 7.5rem"
           >
-            Contact Us
+            Contact Us <% if (!user) { %>
           </li>
-          <li class="nav-list-item" onclick="window.location.href='/login';">
+          <li class="nav-list-item" onclick="window.location.href='/login'">
             Login
           </li>
-          <li class="nav-list-item" onclick="window.location.href='/register';">
+          <li class="nav-list-item" onclick="window.location.href='/register'">
             Register
           </li>
+          <% } %>
         </ul>
       </nav>
     </header>
+    <% if (success && success.length) { %>
+    <div class="flash flash-success">
+      <% success.forEach(msg => { %>
+      <p><%= msg %></p>
+      <% }) %>
+    </div>
+    <% } %> <% if (danger && danger.length) { %>
+    <div class="flash flash-danger">
+      <% danger.forEach(msg => { %>
+      <p><%= msg %></p>
+      <% }) %>
+    </div>
+    <% } %>
+
     <main><%- body %></main>
     <footer class="footer grid grid--5-cols">
       <div class="footer-text-box">
@@ -124,6 +141,49 @@
     <div class="preferences">
       <ion-icon class="msg-icon" name="shield-checkmark-sharp"></ion-icon>
     </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        // Get current page path
+        const currentPath = window.location.pathname;
+
+        // Get all navigation items
+        const navItems = document.querySelectorAll('.nav-list-item');
+
+        // Define the mapping between paths and navigation items
+        const pathMap = {
+          '/': 0, // Home
+          '/products': 1, // Products
+          '/contact-us': 2, // Contact Us
+          '/login': 3, // Login
+          '/register': 4, // Register
+        };
+
+        // Remove active class from all items first
+        navItems.forEach(item => item.classList.remove('active'));
+
+        // Add active class to current page
+        if (pathMap.hasOwnProperty(currentPath)) {
+          const currentIndex = pathMap[currentPath];
+          if (navItems[currentIndex]) {
+            navItems[currentIndex].classList.add('active');
+          }
+        }
+
+        // Alternative approach: Check by onclick attribute
+        navItems.forEach(item => {
+          const onclickAttr = item.getAttribute('onclick');
+          if (onclickAttr) {
+            // Extract the path from onclick="window.location.href='/path';"
+            const pathMatch = onclickAttr.match(
+              /window\.location\.href='([^']+)'/
+            );
+            if (pathMatch && pathMatch[1] === currentPath) {
+              item.classList.add('active');
+            }
+          }
+        });
+      });
+    </script>
     <script
       type="module"
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"

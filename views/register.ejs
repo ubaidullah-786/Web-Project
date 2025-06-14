@@ -101,6 +101,30 @@
             </div>
           </div>
 
+          <div class="form-group password-group">
+            <label for="confirmPassword" class="form-label"
+              >Confirm Password *</label
+            >
+            <div class="password-input-wrapper">
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                class="form-input"
+                placeholder="Confirm Password"
+                required
+              />
+              <button
+                type="button"
+                class="password-toggle"
+                id="toggleConfirmPassword"
+              >
+                SHOW
+              </button>
+            </div>
+            <span class="error-message" id="confirmPasswordError"></span>
+          </div>
+
           <button type="submit" class="auth-btn">CREATE ACCOUNT</button>
           <div class="auth-links">
             <p class="login-prompt">
@@ -378,8 +402,12 @@
     const mobileEl = document.getElementById('mobile');
     const registerEmailEl = document.getElementById('registerEmail');
     const registerPasswordEl = document.getElementById('registerPassword');
+    const confirmPasswordEl = document.getElementById('confirmPassword');
     const registerForm = document.getElementById('registerForm');
     const passwordToggleBtn = document.getElementById('toggleRegisterPassword');
+    const confirmPasswordToggleBtn = document.getElementById(
+      'toggleConfirmPassword'
+    );
     const passwordBanner = document.getElementById('passwordBanner');
 
     // UTILS: show/clear errors
@@ -430,6 +458,19 @@
       passwordToggleBtn.textContent = type === 'password' ? 'SHOW' : 'HIDE';
     });
 
+    confirmPasswordToggleBtn.addEventListener('click', function () {
+      // figure out the new type
+      const type =
+        confirmPasswordEl.getAttribute('type') === 'password'
+          ? 'text'
+          : 'password';
+      // set it
+      confirmPasswordEl.setAttribute('type', type);
+      // swap the button label
+      confirmPasswordToggleBtn.textContent =
+        type === 'password' ? 'SHOW' : 'HIDE';
+    });
+
     // 5) Password requirements banner - positioned relative to password field
     registerPasswordEl.addEventListener('focus', () => {
       passwordBanner.style.display = 'block';
@@ -444,6 +485,12 @@
         clearError(registerPasswordEl);
     });
 
+    // Clear error on confirm password input
+    confirmPasswordEl.addEventListener('input', () => {
+      if (confirmPasswordEl.classList.contains('error'))
+        clearError(confirmPasswordEl);
+    });
+
     // 6) On submit: full validation
     registerForm.addEventListener('submit', function (e) {
       let valid = true;
@@ -454,6 +501,7 @@
         mobileEl,
         registerEmailEl,
         registerPasswordEl,
+        confirmPasswordEl,
       ].forEach(el => clearError(el));
 
       // first name
@@ -491,6 +539,15 @@
         valid = false;
       } else if (!validatePassword(registerPasswordEl.value)) {
         showError(registerPasswordEl, 'Does not meet requirements');
+        valid = false;
+      }
+
+      // confirm password
+      if (!confirmPasswordEl.value) {
+        showError(confirmPasswordEl, 'Confirm password is required');
+        valid = false;
+      } else if (registerPasswordEl.value !== confirmPasswordEl.value) {
+        showError(confirmPasswordEl, 'Passwords do not match');
         valid = false;
       }
 

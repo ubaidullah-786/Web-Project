@@ -1,16 +1,15 @@
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
-dotenv.config({ path: "./config.env" });
+dotenv.config({ path: './config.env' });
 
-const app = require("./app");
-
+const app = require('./app');
 const localDB = process.env.DATABASE_LOCAL;
 
 (async () => {
   try {
     await mongoose.connect(localDB);
-    console.log("Database connection successful...");
+    console.log('Database connection successful...');
   } catch (err) {
     console.error(`Connection error: ${err}`);
   }
