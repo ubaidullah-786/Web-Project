@@ -1,0 +1,51 @@
+[
+  {
+    "title": "Signature Harrington Jacket",
+    "price": 149.0,
+    "currency": "USD",
+    "image": "first-img",
+    "colors": ["black", "dark-green", "brown", "dark-blue"]
+  },
+  {
+    "title": "Signature Target Print Tee Shirt",
+    "price": 149.0,
+    "currency": "USD",
+    "image": "second-img",
+    "colors": ["black", "dark-green", "brown", "dark-blue"]
+  },
+  {
+    "title": "Bicoloured Textured Polo Shirt",
+    "price": 109.0,
+    "currency": "USD",
+    "image": "third-img",
+    "colors": ["blue"]
+  },
+  {
+    "title": "Signature Pique Polo Shirt",
+    "price": 79.0,
+    "currency": "USD",
+    "image": "fourth-img",
+    "colors": ["black", "dark-green", "brown", "dark-blue"]
+  },
+  {
+    "title": "Classic Check Shorts",
+    "price": 99.0,
+    "currency": "USD",
+    "image": "fifth-img",
+    "colors": ["brown"]
+  },
+  {
+    "title": "Jacquard Stripe Polo Shirt",
+    "price": 119.0,
+    "currency": "USD",
+    "image": "seventh-img",
+    "colors": ["dark-green"]
+  },
+  {
+    "title": "Ace Cafe Chequerboar Shirt",
+    "price": 125.0,
+    "currency": "USD",
+    "image": "eigth-img",
+    "colors": ["brown"]
+  }
+]

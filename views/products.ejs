@@ -1,0 +1,34 @@
+<div class="articles">
+  <div class="product-grid">
+    <% products.forEach(product => { %>
+    <div class="product-card">
+      <div class="product-image-container">
+        <!-- use first image or a CSS class to render background -->
+        <div role="img" class="g-img <%= product.image %>"></div>
+
+        <div class="add-to-cart" onclick="addToCart('<%= product._id %>')">
+          <ion-icon class="add-icon" name="add-outline"></ion-icon>
+        </div>
+      </div>
+
+      <div class="heading-secondary"><%= product.title %></div>
+
+      <div class="product-price heading-secondary">
+        $ <%= product.price.toFixed(2) %> <%= product.currency %>
+      </div>
+
+      <% if (product.colors && product.colors.length) { %>
+      <div class="colors">
+        <% product.colors.slice(0,4).forEach(color => { %>
+        <div role="button" class="<%= color %> color">
+          <div class="color-inside <%= color %>"></div>
+        </div>
+        <% }) %> <% if (product.colors.length > 4) { %>
+        <p class="heading-secondary">+<%= product.colors.length - 4 %></p>
+        <% } %>
+      </div>
+      <% } %>
+    </div>
+    <% }) %>
+  </div>
+</div>
