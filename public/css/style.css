@@ -105,6 +105,33 @@
   cursor: pointer;
 }
 
+.icon-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* Style the little red badge */
+.cart-count-badge {
+  position: absolute;
+  top: -0.4rem;
+  right: -0.4rem;
+
+  display: inline-block;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  padding: 0 0.4rem;
+
+  background-color: #e74c3c;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.6rem;
+  text-align: center;
+
+  border-radius: 50%;
+  box-shadow: 0 0 0.2rem rgba(0, 0, 0, 0.2);
+}
+
 /*******************************/
 /* NAVIGATION */
 /*******************************/

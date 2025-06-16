@@ -26,10 +26,12 @@ exports.addCartProduct = async (req, res) => {
     }
 
     const message = `"${prod.title}" added to cart`;
+    const totalQty = req.session.cart.reduce((sum, item) => sum + item.qty, 0);
+
     return res.json({
       success: true,
-      cartCount: req.session.cart.length,
-      message, // send it back right now
+      cartCount: totalQty,
+      message,
     });
   } catch (err) {
     console.error(err);
@@ -47,9 +49,7 @@ exports.updateCartProduct = (req, res) => {
   console.log('inside update');
   // expects body: { productId, qty }
   const { productId, qty } = req.body;
-  console.log(productId, qty);
   if (!req.session.cart) return res.redirect('/cart');
-  console.log('after req.session');
   req.session.cart = req.session.cart
     .map(item =>
       item.productId === productId ? { ...item, qty: Number(qty) } : item

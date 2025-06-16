@@ -30,17 +30,23 @@
 
       <div class="flag-account-cart">
         <div class="flag" role="banner"></div>
+
         <ion-icon
           class="icon"
           name="person-outline"
           onclick="window.location.href='/account';"
         ></ion-icon>
-        <ion-icon
-          class="icon"
-          name="bag-outline"
-          onclick="window.location.href='/cart'"
-        ></ion-icon>
+
+        <div class="icon-wrapper">
+          <ion-icon
+            class="icon"
+            name="bag-outline"
+            onclick="window.location.href='/cart'"
+          ></ion-icon>
+          <span id="cart-count" class="cart-count-badge"><%= cartCount %></span>
+        </div>
       </div>
+
       <nav class="nav">
         <ul class="nav-list heading-secondary">
           <li class="nav-list-item" onclick="window.location.href='/';">
