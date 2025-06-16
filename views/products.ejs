@@ -1,3 +1,7 @@
+<div
+  id="flash-container"
+  style="position: fixed; top: 1rem; right: 1rem; z-index: 9999"
+></div>
 <div class="articles">
   <div class="product-grid">
     <% products.forEach(product => { %>
@@ -19,7 +23,7 @@
 
       <% if (product.colors && product.colors.length) { %>
       <div class="colors">
-        <% product.colors.slice(0,4).forEach(color => { %>
+        <% product.colors.forEach(color => { %>
         <div role="button" class="<%= color %> color">
           <div class="color-inside <%= color %>"></div>
         </div>
@@ -32,3 +36,42 @@
     <% }) %>
   </div>
 </div>
+<script>
+  // helper to show a temporary flash
+  function showFlash(msg, type = 'success') {
+    const container = document.getElementById('flash-container');
+    console.log('Container found:', container);
+    const div = document.createElement('div');
+    div.className = `flash flash-${type}`;
+    div.textContent = msg;
+    container.append(div);
+    console.log('Flash element added:', div);
+    setTimeout(() => div.remove(), 3000);
+  }
+
+  async function addToCart(productId) {
+    try {
+      const resp = await fetch(`/cart/add/${productId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      const data = await resp.json();
+
+      if (data.success) {
+        // update cart‐count badge
+        const cartCountElement = document.getElementById('cart-count');
+
+        if (cartCountElement) {
+          cartCountElement.textContent = data.cartCount;
+        }
+
+        showFlash(data.message, 'success');
+      } else {
+        showFlash(data.error || 'Could not add to cart', 'danger');
+      }
+    } catch (err) {
+      showFlash('Network error, please try again', 'danger');
+    }
+  }
+</script>

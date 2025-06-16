@@ -6,6 +6,7 @@ const app = express();
 const mongoStore = require('connect-mongo');
 const flash = require('connect-flash');
 const defaultRouter = require('./routes/defaultRoutes');
+const cartRouter = require('./routes/cartRoutes');
 
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 
@@ -20,7 +21,7 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET || 'keyboard cat',
     cookie: {
-      maxAge: 1000 * 120,
+      maxAge: 1000 * 60 * 5,
     },
     resave: false,
     saveUninitialized: false,
@@ -39,5 +40,6 @@ app.use((req, res, next) => {
 });
 
 app.use(defaultRouter);
+app.use('/cart', cartRouter);
 
 module.exports = app;
