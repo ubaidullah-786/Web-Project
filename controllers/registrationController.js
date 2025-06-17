@@ -1,5 +1,5 @@
 const User = require('../models/userModel');
-
+const bcrypt = require('bcryptjs');
 exports.register = async (req, res) => {
   try {
     let existing = await User.findOne({ email: req.body.email });

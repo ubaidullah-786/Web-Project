@@ -3,7 +3,7 @@ const router = express.Router();
 const registerUser = require('../controllers/registrationController');
 const signIn = require('../controllers/signInController');
 const Product = require('../models/productModel');
-const Order = require('../models/orderModel');
+const checkout = require('../controllers/checkoutController');
 
 router.get('/', (req, res) => res.render('homePage'));
 router.get('/contact-us', (req, res) => res.render('contactUs'));
@@ -32,32 +32,7 @@ router
   .get((req, res) => res.render('login'))
   .post(signIn.signInUser);
 
-// GET checkout form
-router.get('/checkout', (req, res) => {
-  const cart = req.session.cart || [];
-  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  res.render('checkout', { cart, total });
-});
+router.get('/checkout', checkout.getPage);
+router.post('/checkout', checkout.createOrder);
 
-// POST place order
-router.post('/checkout', async (req, res) => {
-  const cart = req.session.cart || [];
-  if (!cart.length) {
-    req.flash('danger', 'Your cart is empty');
-    return res.redirect('/cart');
-  }
-  const { name, phone, address } = req.body;
-  // create order
-  await Order.create({
-    sessionId: req.sessionID,
-    items: cart,
-    total,
-    customer: { name, phone, address },
-    status: 'pending',
-  });
-  // clear cart
-  req.session.cart = [];
-  req.flash('success', 'Order placed—thank you!');
-  res.redirect('/');
-});
 module.exports = router;

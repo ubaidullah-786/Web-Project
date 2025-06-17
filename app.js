@@ -5,6 +5,7 @@ const session = require('express-session');
 const app = express();
 const mongoStore = require('connect-mongo');
 const flash = require('connect-flash');
+const initializeLocals = require('./middlewares/localsInitialization');
 const defaultRouter = require('./routes/defaultRoutes');
 const cartRouter = require('./routes/cartRoutes');
 
@@ -21,7 +22,7 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET || 'keyboard cat',
     cookie: {
-      maxAge: 1000 * 60 * 2,
+      maxAge: 1000 * 60 * 60,
     },
     resave: false,
     saveUninitialized: false,
@@ -31,24 +32,8 @@ app.use(
   })
 );
 
-app.use((req, res, next) => {
-  const hasFlash = req.session && req.session.flash;
-  res.locals.success = hasFlash ? req.flash('success') : [];
-  res.locals.danger = hasFlash ? req.flash('danger') : [];
-  res.locals.user = req.session.user || null;
-  const cart = req.session.cart || [];
-  res.locals.cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
-  next();
-});
-
+app.use(initializeLocals.initLocals);
 app.use(defaultRouter);
-
-app.use((req, res, next) => {
-  const cart = req.session.cart || [];
-  res.locals.cartCount = cart.reduce((sum, i) => sum + i.qty, 0);
-  next();
-});
-
 app.use('/cart', cartRouter);
 
 module.exports = app;

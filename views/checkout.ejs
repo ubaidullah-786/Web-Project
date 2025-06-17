@@ -1,0 +1,305 @@
+<div class="auth-page">
+  <div class="container">
+    <div class="auth-wrapper">
+      <section class="auth-section">
+        <h2 class="section-title">Checkout</h2>
+      </section>
+
+      <% if (cart.length === 0) { %>
+      <p>Your cart is empty. <a href="/products">Continue shopping</a>.</p>
+      <% } else { %>
+      <!-- Cart Summary -->
+      <section class="cart-summary">
+        <h3 class="section-subtitle">Your Cart</h3>
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% cart.forEach(item => { %>
+            <tr>
+              <td><%= item.title %></td>
+              <td>$<%= item.price.toFixed(2) %></td>
+              <td><%= item.qty %></td>
+              <td>$<%= (item.price * item.qty).toFixed(2) %></td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <h4 class="total">Total: $<%= total.toFixed(2) %></h4>
+      </section>
+
+      <!-- Checkout Form -->
+      <section class="customer-details">
+        <form
+          id="checkoutForm"
+          class="auth-form"
+          action="/checkout"
+          method="POST"
+          novalidate
+        >
+          <div class="form-group">
+            <label for="name" class="form-label">Name *</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              class="form-input"
+              placeholder="Full name"
+              required
+            />
+            <span class="error-message" id="nameError"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="phone" class="form-label">Phone *</label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              class="form-input"
+              placeholder="Mobile"
+            />
+            <span class="error-message" id="phoneError"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="address" class="form-label">Address *</label>
+            <textarea
+              id="address"
+              name="address"
+              class="form-input"
+              rows="3"
+              placeholder="Address"
+              required
+            ></textarea>
+            <span class="error-message" id="addressError"></span>
+          </div>
+
+          <button type="submit" class="auth-btn">Pay Later with Cash</button>
+        </form>
+      </section>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<style>
+  .auth-page {
+    padding: 6rem 2rem;
+    max-width: 70rem;
+    margin: 0 auto;
+    color: #333;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .container {
+    width: 100%;
+  }
+
+  .auth-wrapper {
+    background: #fff;
+    padding: 4rem;
+    border-radius: 0.8rem;
+    box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.1);
+  }
+
+  .section-title {
+    font-size: 3.2rem;
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+    color: #2c2c2c;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .section-subtitle {
+    font-size: 2.4rem;
+    color: #666;
+    margin-bottom: 2rem;
+  }
+
+  .cart-summary {
+    margin-bottom: 3rem;
+  }
+
+  .cart-table {
+    font-size: 1.6rem;
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+  }
+
+  .cart-table th,
+  .cart-table td {
+    text-align: left;
+    padding: 0.8rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .total {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  .auth-form {
+    max-width: 55rem;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .form-group {
+    margin-bottom: 2.5rem;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #2c2c2c;
+    margin-bottom: 0.8rem;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 1.4rem 1.6rem;
+    border: 1px solid #ddd;
+    border-radius: 0.4rem;
+    font-size: 1.4rem;
+    background: #fff;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: #000;
+  }
+
+  .form-input::placeholder {
+    color: #999;
+  }
+
+  .form-input.error {
+    border-color: #e74c3c;
+  }
+
+  .error-message {
+    display: block;
+    color: #e74c3c;
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+    min-height: 1.5rem;
+  }
+
+  .auth-btn {
+    width: 100%;
+    background: #000;
+    color: white;
+    border: none;
+    padding: 1.6rem 2rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+    cursor: pointer;
+    border-radius: 0.4rem;
+    transition: background-color 0.3s ease;
+  }
+
+  .auth-btn:hover {
+    background: #333;
+  }
+
+  @media (max-width: 768px) {
+    .auth-page {
+      padding: 4rem 1rem;
+    }
+
+    .auth-wrapper {
+      padding: 3rem 2rem;
+    }
+
+    .section-title {
+      font-size: 2.8rem;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .auth-wrapper {
+      padding: 2rem 1.5rem;
+    }
+
+    .section-title {
+      font-size: 2.4rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const nameEl = document.getElementById('name');
+    const phoneEl = document.getElementById('phone');
+    const addressEl = document.getElementById('address');
+    const form = document.getElementById('checkoutForm');
+
+    function showError(el, msg) {
+      const err = document.getElementById(el.id + 'Error');
+      err.textContent = msg;
+      el.classList.add('error');
+    }
+    function clearError(el) {
+      const err = document.getElementById(el.id + 'Error');
+      err.textContent = '';
+      el.classList.remove('error');
+    }
+
+    // Prevent digits in name
+    nameEl.addEventListener('input', () => {
+      nameEl.value = nameEl.value.replace(/\d+/g, '');
+      if (nameEl.classList.contains('error')) clearError(nameEl);
+    });
+
+    // Phone: only digits, max 11
+    phoneEl.setAttribute('maxlength', 11);
+    phoneEl.addEventListener('input', () => {
+      phoneEl.value = phoneEl.value.replace(/\D+/g, '');
+      if (phoneEl.classList.contains('error')) clearError(phoneEl);
+    });
+
+    form.addEventListener('submit', function (e) {
+      let valid = true;
+      [nameEl, phoneEl, addressEl].forEach(el => clearError(el));
+
+      // Name
+      if (!nameEl.value.trim()) {
+        showError(nameEl, 'Name is required');
+        valid = false;
+      }
+      // Phone mandatory
+      if (!phoneEl.value.trim()) {
+        showError(phoneEl, 'Phone is required');
+        valid = false;
+      }
+      // Address
+      if (!addressEl.value.trim()) {
+        showError(addressEl, 'Address is required');
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
+    });
+  });
+</script>
