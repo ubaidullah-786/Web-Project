@@ -3,15 +3,121 @@
   <div class="container">
     <!-- Header -->
     <div class="contact-header">
-      <h1 class="main-title">Welcome, <%= user.name %></h1>
+      <h1 class="main-title">Welcome, <%= user.firstName %></h1>
     </div>
 
-    <!-- Message -->
-    <section class="reach-us-section">
-      <h2 class="section-title">Welcome to your Ben Sherman account.</h2>
+    <!-- Account Information Section -->
+    <section class="account-info-section">
+      <div class="account-card">
+        <div class="account-left">
+          <h2 class="section-title">Account Information</h2>
+        </div>
+        <div class="account-right">
+          <div class="user-details">
+            <div class="detail-row">
+              <span class="detail-label">First Name:</span>
+              <span class="detail-value"><%= user.firstName %></span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Last Name:</span>
+              <span class="detail-value"><%= user.lastName %></span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Email:</span>
+              <span class="detail-value"><%= user.email %></span>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- Logout Button (same style as Contact Us "STORE FINDER") -->
+    <!-- My Orders Section -->
+    <section class="orders-section">
+      <div class="account-card">
+        <div class="account-left">
+          <h2 class="section-title">My Orders</h2>
+        </div>
+        <div class="account-right">
+          <div class="orders-content">
+            <% if (orders && orders.length > 0) { %>
+            <div class="orders-list">
+              <% orders.forEach(order => { %>
+              <div class="order-item">
+                <div class="order-header">
+                  <div class="order-info">
+                    <h4 class="order-id">
+                      Order #<%= order._id.toString().slice(-8).toUpperCase() %>
+                    </h4>
+                    <span class="order-date">
+                      <%= new Date(order.createdAt).toLocaleDateString('en-US',
+                      { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                    </span>
+                  </div>
+                  <div class="order-status-wrapper">
+                    <span class="order-status status-<%= order.status %>">
+                      <%= order.status.charAt(0).toUpperCase() +
+                      order.status.slice(1) %>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="order-details">
+                  <div class="order-items">
+                    <h5 class="items-title">Items:</h5>
+                    <div class="items-list">
+                      <% order.items.forEach(item => { %>
+                      <div class="item-row">
+                        <span class="item-name"><%= item.title %></span>
+                        <span class="item-details">
+                          Qty: <%= item.qty %> × $<%= item.price.toFixed(2) %> =
+                          <strong
+                            >$<%= (item.qty * item.price).toFixed(2) %></strong
+                          >
+                        </span>
+                      </div>
+                      <% }) %>
+                    </div>
+                  </div>
+
+                  <div class="order-summary">
+                    <div class="delivery-info">
+                      <h5 class="delivery-title">Delivery Address:</h5>
+                      <p class="delivery-address">
+                        <%= order.customer.address %>
+                      </p>
+                      <p class="delivery-phone">
+                        Phone: <%= order.customer.phone %>
+                      </p>
+                    </div>
+
+                    <div class="order-total">
+                      <span class="total-label">Total Amount:</span>
+                      <span class="total-amount">
+                        $<%= order.items.reduce((sum, item) => sum + (item.qty *
+                        item.price), 0).toFixed(2) %>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+            </div>
+            <% } else { %>
+            <div class="no-orders">
+              <p class="no-orders-text">You haven't placed any orders yet.</p>
+              <div class="continue-shopping">
+                <a href="/products" class="continue-link"
+                  >Start Shopping &rarr;</a
+                >
+              </div>
+            </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Logout Button -->
     <div class="address-sections">
       <button
         class="store-finder-btn"
@@ -23,28 +129,43 @@
     </div>
   </div>
 </div>
-<% } else { %>
-<div class="contact-page">
-  <div class="container">
-    <div class="contact-header">
-      <h1 class="main-title">
-        Please log in to your account to see your profile.
-      </h1>
-    </div>
-    <div class="address-sections">
-      <button
-        class="store-finder-btn"
-        onclick="window.location.href='/login';"
-        style="max-width: 12rem"
-      >
-        LOG IN
-      </button>
-    </div>
-  </div>
-</div>
 <% } %>
 
 <style>
+  .no-orders-text {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+  }
+
+  .continue-link {
+    color: #666;
+    text-decoration: none;
+    font-size: 1.6rem;
+    transition: color 0.2s ease;
+  }
+
+  .continue-link:hover {
+    color: #000;
+  }
+
+  .order-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .order-item {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    font-size: 1.6rem;
+  }
+
+  .orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5.8rem;
+  }
   .contact-page {
     padding: 4rem 2rem;
     max-width: 120rem;
@@ -79,7 +200,70 @@
     font-weight: 600;
     letter-spacing: 0.1rem;
     color: #2c2c2c;
-    margin-bottom: 2rem;
+    margin: 0;
+  }
+
+  .account-info-section,
+  .orders-section {
+    margin-bottom: 3rem;
+  }
+
+  .account-card {
+    background: #f8f8f8;
+    border-radius: 0.8rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 3rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 4rem;
+    text-align: left;
+    max-width: 80rem;
+    margin: 0 auto;
+  }
+
+  .account-left {
+    flex: 1;
+    min-width: 20rem;
+  }
+
+  .account-right {
+    flex: 2;
+  }
+
+  .user-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .detail-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .detail-label {
+    font-weight: 600;
+    color: #2c2c2c;
+    min-width: 10rem;
+    font-size: 1.4rem;
+  }
+
+  .detail-value {
+    color: #555;
+    font-size: 1.6rem;
+    flex: 1;
+  }
+
+  .orders-content {
+    padding: 2rem 0;
+  }
+
+  .coming-soon {
+    color: #666;
+    font-style: italic;
+    font-size: 1.3rem;
+    margin: 0;
   }
 
   .reach-us-section {
@@ -138,17 +322,6 @@
     display: flex;
     align-items: flex-start;
     gap: 0.5rem;
-  }
-
-  .detail-label {
-    font-weight: 600;
-    color: #2c2c2c;
-    min-width: 10rem;
-  }
-
-  .detail-value {
-    color: #555;
-    line-height: 1.5;
   }
 
   .phone-link {
@@ -241,6 +414,26 @@
       font-size: 1.6rem;
     }
 
+    .account-card {
+      flex-direction: column;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    .account-left {
+      min-width: auto;
+    }
+
+    .detail-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .detail-label {
+      min-width: auto;
+    }
+
     .address-grid {
       grid-template-columns: 1fr;
       gap: 2rem;
@@ -258,10 +451,6 @@
       flex-direction: column;
       gap: 0.5rem;
     }
-
-    .detail-label {
-      min-width: auto;
-    }
   }
 
   @media (max-width: 480px) {
@@ -276,6 +465,10 @@
 
     .method-title {
       margin-bottom: 0.5rem;
+    }
+
+    .account-card {
+      padding: 1.5rem;
     }
   }
 </style>

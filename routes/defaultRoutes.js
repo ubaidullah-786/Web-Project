@@ -4,10 +4,13 @@ const registerUser = require('../controllers/registrationController');
 const signIn = require('../controllers/signInController');
 const Product = require('../models/productModel');
 const checkout = require('../controllers/checkoutController');
+const account = require('../controllers/accountController');
 
 router.get('/', (req, res) => res.render('homePage'));
 router.get('/contact-us', (req, res) => res.render('contactUs'));
-router.get('/account', (req, res) => res.render('account'));
+router.get('/account', account.renderPage);
+router.get('/checkout', checkout.getPage);
+router.post('/checkout', checkout.createOrder);
 
 router.get('/products', async (req, res) => {
   const productsList = await Product.find().lean();
@@ -31,8 +34,5 @@ router
   .route('/login')
   .get((req, res) => res.render('login'))
   .post(signIn.signInUser);
-
-router.get('/checkout', checkout.getPage);
-router.post('/checkout', checkout.createOrder);
 
 module.exports = router;

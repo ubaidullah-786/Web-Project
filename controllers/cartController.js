@@ -1,7 +1,16 @@
 const Product = require('../models/productModel');
+const User = require('../models/userModel');
 exports.addCartProduct = async (req, res) => {
   try {
     if (!req.session.cart) req.session.cart = [];
+
+    if (req.session.user) {
+      await User.findByIdAndUpdate(
+        req.session.user.id,
+        { cart: req.session.cart },
+        { new: false }
+      );
+    }
 
     const prod = await Product.findById(req.params.id).lean();
     if (!prod) return res.status(404).json({ error: 'Product not found' });
@@ -40,7 +49,7 @@ exports.viewCart = (req, res) => {
   res.render('cart', { cart, total });
 };
 
-exports.updateCartProduct = (req, res) => {
+exports.updateCartProduct = async (req, res) => {
   const { productId, qty } = req.body;
   if (!req.session.cart) return res.redirect('/cart');
   req.session.cart = req.session.cart
@@ -49,6 +58,13 @@ exports.updateCartProduct = (req, res) => {
     )
     .filter(item => item.qty > 0);
 
+  if (req.session.user) {
+    await User.findByIdAndUpdate(
+      req.session.user.id,
+      { cart: req.session.cart },
+      { new: false }
+    );
+  }
   req.flash('success', 'Cart updated!');
   res.redirect('/cart');
 };

@@ -43,14 +43,63 @@
           method="POST"
           novalidate
         >
+          <% if (user) { %>
+          <!-- User is logged in - show pre-filled info and only address field -->
+          <div class="user-info-section">
+            <h4 class="section-subtitle">Delivery Information</h4>
+            <div class="user-display">
+              <p class="name-label">
+                <strong>Name:</strong> <%= user.firstName %> <%= user.lastName
+                %>
+              </p>
+            </div>
+            <!-- Hidden fields to send user data -->
+            <input
+              type="hidden"
+              name="name"
+              value="<%= user.firstName %> <%= user.lastName %>"
+            />
+          </div>
+
           <div class="form-group">
-            <label for="name" class="form-label">Name *</label>
+            <label for="phone" class="form-label">Phone *</label>
+            <input
+              type="tel"
+              name="phone"
+              class="form-input phone"
+              placeholder="Mobile number"
+              required
+            />
+            <span class="error-message" id="phoneError"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="address" class="form-label">Delivery Address *</label>
+            <textarea
+              id="address"
+              name="address"
+              class="form-input"
+              rows="3"
+              placeholder="Enter your complete delivery address"
+              required
+            ></textarea>
+            <span class="error-message" id="addressError"></span>
+          </div>
+
+          <% } else { %>
+          <!-- User is not logged in - collect all information -->
+          <div class="guest-info-section">
+            <h4 class="section-subtitle">Customer Information</h4>
+          </div>
+
+          <div class="form-group">
+            <label for="name" class="form-label">Full Name *</label>
             <input
               type="text"
               id="name"
               name="name"
               class="form-input"
-              placeholder="Full name"
+              placeholder="Enter your full name"
               required
             />
             <span class="error-message" id="nameError"></span>
@@ -60,28 +109,33 @@
             <label for="phone" class="form-label">Phone *</label>
             <input
               type="tel"
-              id="phone"
               name="phone"
-              class="form-input"
-              placeholder="Mobile"
+              class="form-input phone"
+              placeholder="Enter your mobile number"
+              required
             />
             <span class="error-message" id="phoneError"></span>
           </div>
 
           <div class="form-group">
-            <label for="address" class="form-label">Address *</label>
+            <label for="address" class="form-label">Delivery Address *</label>
             <textarea
               id="address"
               name="address"
               class="form-input"
               rows="3"
-              placeholder="Address"
+              placeholder="Enter your complete delivery address"
               required
             ></textarea>
             <span class="error-message" id="addressError"></span>
           </div>
 
-          <button type="submit" class="auth-btn">Pay Later with Cash</button>
+          <% } %>
+
+          <button type="submit" class="auth-btn">
+            <% if (user) { %> Place Order - Pay with Cash <% } else { %> Place
+            Order as Guest - Pay with Cash <% } %>
+          </button>
         </form>
       </section>
       <% } %>
@@ -90,6 +144,14 @@
 </div>
 
 <style>
+  #checkoutForm {
+    margin: 0;
+  }
+
+  .info-title {
+    font-size: 2.4rem;
+  }
+
   .auth-page {
     padding: 6rem 2rem;
     max-width: 70rem;
@@ -162,10 +224,18 @@
 
   .form-label {
     display: block;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     font-weight: 500;
     color: #2c2c2c;
     margin-bottom: 0.8rem;
+  }
+
+  .name-label {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: #2c2c2c;
+    margin-bottom: 1.6rem;
   }
 
   .form-input {
@@ -250,50 +320,73 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const nameEl = document.getElementById('name');
-    const phoneEl = document.getElementById('phone');
+    const nameEl = document.getElementById('name'); // only for guests
+    const phoneEl = document.querySelector('.phone'); // always present
     const addressEl = document.getElementById('address');
     const form = document.getElementById('checkoutForm');
 
     function showError(el, msg) {
       const err = document.getElementById(el.id + 'Error');
-      err.textContent = msg;
-      el.classList.add('error');
+      if (err) {
+        err.textContent = msg;
+        el.classList.add('error');
+      }
     }
     function clearError(el) {
       const err = document.getElementById(el.id + 'Error');
-      err.textContent = '';
-      el.classList.remove('error');
+      if (err) {
+        err.textContent = '';
+        el.classList.remove('error');
+      }
     }
 
-    // Prevent digits in name
-    nameEl.addEventListener('input', () => {
-      nameEl.value = nameEl.value.replace(/\d+/g, '');
-      if (nameEl.classList.contains('error')) clearError(nameEl);
-    });
+    // 1) If nameEl exists (guest), prevent digits in it
+    if (nameEl) {
+      nameEl.addEventListener('input', () => {
+        nameEl.value = nameEl.value.replace(/\d+/g, '');
+        if (nameEl.classList.contains('error')) clearError(nameEl);
+      });
+    }
 
-    // Phone: only digits, max 11
-    phoneEl.setAttribute('maxlength', 11);
-    phoneEl.addEventListener('input', () => {
-      phoneEl.value = phoneEl.value.replace(/\D+/g, '');
-      if (phoneEl.classList.contains('error')) clearError(phoneEl);
-    });
+    // 2) Phone: only digits, max 11 (always)
+    if (phoneEl) {
+      phoneEl.setAttribute('maxlength', 11);
+      phoneEl.addEventListener('input', () => {
+        // strip non-digits
+        phoneEl.value = phoneEl.value.replace(/\D+/g, '');
+        if (phoneEl.classList.contains('error')) clearError(phoneEl);
+      });
+    }
 
+    // 3) Form submit validation
     form.addEventListener('submit', function (e) {
       let valid = true;
-      [nameEl, phoneEl, addressEl].forEach(el => clearError(el));
 
-      // Name
-      if (!nameEl.value.trim()) {
-        showError(nameEl, 'Name is required');
-        valid = false;
+      // Clear previous errors
+      if (nameEl) clearError(nameEl);
+      if (phoneEl) clearError(phoneEl);
+      clearError(addressEl);
+
+      // Validate name only if guest
+      if (nameEl) {
+        if (!nameEl.value.trim()) {
+          showError(nameEl, 'Name is required');
+          valid = false;
+        }
       }
-      // Phone mandatory
-      if (!phoneEl.value.trim()) {
-        showError(phoneEl, 'Phone is required');
-        valid = false;
+
+      // Phone is always required
+      if (phoneEl) {
+        if (!phoneEl.value.trim()) {
+          showError(phoneEl, 'Phone is required');
+          valid = false;
+        } else if (phoneEl.value.length < 10) {
+          showError(phoneEl, 'Enter at least 10 digits');
+          valid = false;
+        }
       }
-      // Address
+
+      // Address always required
       if (!addressEl.value.trim()) {
         showError(addressEl, 'Address is required');
         valid = false;

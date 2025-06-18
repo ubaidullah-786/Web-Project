@@ -1,4 +1,5 @@
 const Order = require('../models/orderModel');
+const User = require('../models/userModel');
 
 exports.getPage = (req, res) => {
   const cart = req.session.cart || [];
@@ -9,10 +10,6 @@ exports.getPage = (req, res) => {
 exports.createOrder = async (req, res) => {
   try {
     const cart = req.session.cart || [];
-    if (!cart.length) {
-      req.flash('danger', 'Your cart is empty');
-      return res.redirect('/cart');
-    }
 
     const { name, phone, address } = req.body;
     if (!name.trim() || !address.trim()) {
@@ -20,15 +17,29 @@ exports.createOrder = async (req, res) => {
       return res.redirect('/checkout');
     }
 
+    const customer = {
+      name: name.trim(),
+      phone: phone.trim(),
+      address: address.trim(),
+    };
+
     await Order.create({
       sessionId: req.sessionID,
       userId: req.session.user?.id || null,
       items: cart,
-      customer: { name, phone, address },
+      customer,
       status: 'pending',
     });
 
     req.session.cart = [];
+
+    if (req.session.user) {
+      await User.findByIdAndUpdate(
+        req.session.user.id,
+        { cart: req.session.cart },
+        { new: false }
+      );
+    }
 
     req.flash('success', 'Order placed! Thank you for shopping.');
     res.redirect('/products');

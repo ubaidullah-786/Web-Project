@@ -14,10 +14,15 @@ exports.signInUser = async (req, res) => {
 
     req.session.user = {
       id: user._id,
-      name: user.firstName,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
     };
+
+    req.session.cart = user.cart || [];
+
     req.flash('success', `Welcome back, ${user.firstName}!`);
-    res.redirect('/');
+    res.redirect('/account');
   } catch (err) {
     console.error(err);
     req.flash('danger', 'Login failed');

@@ -10,7 +10,6 @@ const orderSchema = new mongoose.Schema({
       qty: Number,
     },
   ],
-  total: Number,
   customer: {
     name: String,
     phone: String,
