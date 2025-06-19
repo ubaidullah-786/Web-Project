@@ -49,19 +49,24 @@
 
       <nav class="nav">
         <ul class="nav-list heading-secondary">
-          <li class="nav-list-item" onclick="window.location.href='/';">
-            Home
-          </li>
-          <li class="nav-list-item" onclick="window.location.href='/products';">
+          <li class="nav-list-item" onclick="window.location.href='/'">Home</li>
+          <li class="nav-list-item" onclick="window.location.href='/products'">
             Products
           </li>
           <li
             class="nav-list-item"
-            onclick="window.location.href='/contact-us';"
+            onclick="window.location.href='/contact-us'"
             style="width: 7.5rem"
           >
-            Contact Us <% if (!user) { %>
+            Contact Us
           </li>
+
+          <% if (user) { %>
+          <!-- Only logged‑in users see Vehicles -->
+          <li class="nav-list-item" onclick="window.location.href='/vehicles'">
+            Vehicles
+          </li>
+          <% } %> <% if (!user) { %>
           <li class="nav-list-item" onclick="window.location.href='/login'">
             Login
           </li>

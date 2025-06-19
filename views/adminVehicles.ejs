@@ -1,0 +1,185 @@
+<div class="vehicles-header">
+  <h1 class="admin-title">Vehicle Management</h1>
+  <a href="/admin/vehicles/addForm" class="btn">Add New Vehicle</a>
+</div>
+
+<% if (vehicles && vehicles.length > 0) { %>
+<table class="vehicles-table">
+  <thead>
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Brand</th>
+      <th>Type</th>
+      <th>Price</th>
+      <th>Created</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% vehicles.forEach(vehicle => { %>
+    <tr>
+      <td>
+        <div class="vehicle-image-preview">
+          <img src="<%= vehicle.image %>" alt="<%= vehicle.name %>" />
+        </div>
+      </td>
+      <td><%= vehicle.name %></td>
+      <td><%= vehicle.brand %></td>
+      <td>
+        <span class="type-badge type-<%= vehicle.type %>">
+          <%= vehicle.type.toUpperCase() %>
+        </span>
+      </td>
+      <td>$<%= vehicle.price.toLocaleString() %></td>
+      <td><%= new Date(vehicle.createdAt).toLocaleDateString() %></td>
+      <td>
+        <div class="actions">
+          <a href="/admin/vehicles/edit/<%= vehicle._id %>" class="btn btn-sm">
+            Edit
+          </a>
+          <form
+            class="delete-form"
+            action="/admin/vehicles/delete/<%= vehicle._id %>"
+            method="POST"
+            onsubmit="return confirm('Are you sure you want to delete this vehicle?')"
+          >
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          </form>
+        </div>
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>
+<% } else { %>
+<div class="empty-state">
+  <h3>No Vehicles Found</h3>
+  <p>You haven't added any vehicles yet. Start by adding your first vehicle.</p>
+  <a href="/admin/vehicles/addForm" class="btn">Add Your First Vehicle</a>
+</div>
+<% } %>
+
+<style>
+  .vehicles-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+  }
+
+  .vehicles-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 1.2rem;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .vehicles-table th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .vehicles-table td {
+    padding: 2rem;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 1.4rem;
+    vertical-align: middle;
+  }
+
+  .vehicles-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .vehicles-table tr:hover {
+    background: rgba(102, 126, 234, 0.05);
+  }
+
+  .vehicle-image-preview {
+    width: 8rem;
+    height: 6rem;
+    border-radius: 0.8rem;
+    overflow: hidden;
+    border: 2px solid #e5e7eb;
+  }
+
+  .vehicle-image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .type-badge {
+    padding: 0.6rem 1.2rem;
+    border-radius: 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .type-sedan {
+    background: rgba(59, 130, 246, 0.1);
+    color: #1d4ed8;
+  }
+  .type-suv {
+    background: rgba(16, 185, 129, 0.1);
+    color: #047857;
+  }
+  .type-truck {
+    background: rgba(245, 101, 101, 0.1);
+    color: #dc2626;
+  }
+  .type-van {
+    background: rgba(168, 85, 247, 0.1);
+    color: #7c3aed;
+  }
+  .type-coupe {
+    background: rgba(251, 146, 60, 0.1);
+    color: #ea580c;
+  }
+  .type-hatchback {
+    background: rgba(236, 72, 153, 0.1);
+    color: #be185d;
+  }
+
+  .actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .btn-sm {
+    padding: 0.8rem 1.6rem;
+    font-size: 1.2rem;
+  }
+
+  .delete-form {
+    display: inline;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 6rem 2rem;
+    color: #6b7280;
+  }
+
+  .empty-state h3 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #374151;
+  }
+
+  .empty-state p {
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+  }
+</style>

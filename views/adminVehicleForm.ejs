@@ -1,0 +1,300 @@
+<div class="form-header">
+  <h1 class="admin-title"><%= title %></h1>
+  <a href="/admin/vehicles" class="btn btn-secondary">Back to Vehicles</a>
+</div>
+
+<div class="form-container">
+  <form 
+    action="<%= action === 'add' ? '/admin/vehicles' : '/admin/vehicles/edit/' + vehicle._id %>" 
+    method="POST" 
+    enctype="multipart/form-data"
+    class="vehicle-form"
+  >
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="name">Vehicle Name</label>
+        <input 
+          type="text" 
+          id="name" 
+          name="name" 
+          value="<%= vehicle ? vehicle.name : '' %>"
+          placeholder="Enter vehicle name"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="brand">Brand</label>
+        <input 
+          type="text" 
+          id="brand" 
+          name="brand" 
+          value="<%= vehicle ? vehicle.brand : '' %>"
+          placeholder="Enter vehicle brand"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="price">Price ($)</label>
+        <input 
+          type="number" 
+          id="price" 
+          name="price" 
+          value="<%= vehicle ? vehicle.price : '' %>"
+          placeholder="Enter price"
+          min="0"
+          step="0.01"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="type">Vehicle Type</label>
+        <select id="type" name="type" required>
+          <option value="">Select vehicle type</option>
+          <option value="sedan" <%= vehicle && vehicle.type === 'sedan' ? 'selected' : '' %>>Sedan</option>
+          <option value="SUV" <%= vehicle && vehicle.type === 'SUV' ? 'selected' : '' %>>SUV</option>
+          <option value="truck" <%= vehicle && vehicle.type === 'truck' ? 'selected' : '' %>>Truck</option>
+          <option value="van" <%= vehicle && vehicle.type === 'van' ? 'selected' : '' %>>Van</option>
+          <option value="coupe" <%= vehicle && vehicle.type === 'coupe' ? 'selected' : '' %>>Coupe</option>
+          <option value="hatchback" <%= vehicle && vehicle.type === 'hatchback' ? 'selected' : '' %>>Hatchback</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group image-upload-group">
+      <label for="image">Vehicle Image</label>
+      <% if (vehicle && vehicle.image) { %>
+        <div class="current-image">
+          <img src="<%= vehicle.image %>" alt="Current vehicle image" />
+          <p class="image-note">Current image (upload new image to replace)</p>
+        </div>
+      <% } %>
+      <div class="file-input-wrapper">
+        <input 
+          type="file" 
+          id="image" 
+          name="image" 
+          accept="image/*"
+          <%= action === 'add' ? 'required' : '' %>
+        />
+        <label for="image" class="file-input-label">
+          <span class="file-input-text">Choose Image</span>
+          <span class="file-input-button">Browse</span>
+        </label>
+      </div>
+      <p class="help-text">Maximum file size: 5MB. Supported formats: JPG, PNG, GIF</p>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">
+        <%= action === 'add' ? 'Add Vehicle' : 'Update Vehicle' %>
+      </button>
+      <a href="/admin/vehicles" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+
+<style>
+  .form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+  }
+
+  .form-container {
+    background: white;
+    border-radius: 1.2rem;
+    padding: 3rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    max-width: 80rem;
+  }
+
+  .vehicle-form {
+    width: 100%;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group label {
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    color: #374151;
+    font-size: 1.4rem;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 1.2rem 1.6rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.8rem;
+    font-size: 1.4rem;
+    transition: all 0.3s ease;
+    background: white;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+
+  .image-upload-group {
+    grid-column: 1 / -1;
+  }
+
+  .current-image {
+    margin-bottom: 2rem;
+  }
+
+  .current-image img {
+    width: 20rem;
+    height: 15rem;
+    object-fit: cover;
+    border-radius: 0.8rem;
+    border: 2px solid #e5e7eb;
+  }
+
+  .image-note {
+    margin-top: 0.8rem;
+    font-size: 1.2rem;
+    color: #6b7280;
+    font-style: italic;
+  }
+
+  .file-input-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+
+  .file-input-wrapper input[type="file"] {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+  }
+
+  .file-input-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 1.6rem;
+    border: 2px dashed #d1d5db;
+    border-radius: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #f9fafb;
+  }
+
+  .file-input-label:hover {
+    border-color: #667eea;
+    background: rgba(102, 126, 234, 0.05);
+  }
+
+  .file-input-text {
+    font-size: 1.4rem;
+    color: #6b7280;
+  }
+
+  .file-input-button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.8rem 1.6rem;
+    border-radius: 0.6rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  .help-text {
+    margin-top: 0.8rem;
+    font-size: 1.2rem;
+    color: #6b7280;
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: flex-end;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1.2rem 2.4rem;
+    border: none;
+    border-radius: 0.8rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  }
+
+  .btn-secondary {
+    background: #f3f4f6;
+    color: #374151;
+    padding: 1.2rem 2.4rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.8rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .btn-secondary:hover {
+    background: #e5e7eb;
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 768px) {
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .form-header {
+      flex-direction: column;
+      gap: 1.5rem;
+      align-items: stretch;
+    }
+    
+    .form-actions {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<script>
+  // Update file input label with selected file name
+  document.getElementById('image').addEventListener('change', function(e) {
+    const label = document.querySelector('.file-input-text');
+    if (e.target.files.length > 0) {
+      label.textContent = e.target.files[0].name;
+    } else {
+      label.textContent = 'Choose Image';
+    }
+  });
+</script>

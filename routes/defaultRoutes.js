@@ -3,6 +3,7 @@ const router = express.Router();
 const registerUser = require('../controllers/registrationController');
 const signIn = require('../controllers/signInController');
 const Product = require('../models/productModel');
+const Vehicle = require('../models/vehicleModel');
 const checkout = require('../controllers/checkoutController');
 const account = require('../controllers/accountController');
 
@@ -35,4 +36,13 @@ router
   .get((req, res) => res.render('login'))
   .post(signIn.signInUser);
 
+router.get('/vehicles', async (req, res) => {
+  try {
+    const vehicles = await Vehicle.find().sort({ createdAt: -1 }).lean();
+    res.render('vehicles', { vehicles, title: 'Our Vehicles' });
+  } catch (err) {
+    req.flash('danger', 'Error loading vehicles');
+    res.redirect('/');
+  }
+});
 module.exports = router;
