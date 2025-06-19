@@ -11,13 +11,18 @@ exports.register = async (req, res) => {
     const salt = await bcrypt.genSalt(12);
     const hash = await bcrypt.hash(req.body.password, salt);
 
-    const user = await User.create({
+    const userData = {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
-      mobile: req.body.mobile,
       email: req.body.email,
       password: hash,
-    });
+    };
+
+    if (req.body.mobile && req.body.mobile.trim() !== '') {
+      userData.mobile = req.body.mobile;
+    }
+
+    const user = await User.create(userData);
 
     req.session.user = {
       id: user._id,
@@ -28,7 +33,7 @@ exports.register = async (req, res) => {
 
     req.flash('success', `Welcome, ${user.firstName}!`);
 
-    res.redirect('/');
+    res.redirect('/products');
   } catch (err) {
     console.error(err);
     req.flash('danger', 'Something went wrong');

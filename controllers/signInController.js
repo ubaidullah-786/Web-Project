@@ -12,6 +12,15 @@ exports.signInUser = async (req, res) => {
       return res.render('login', { danger: ['Invalid password'] });
     }
 
+    if (user.roles.includes('admin')) {
+      req.session.user = {
+        id: user._id,
+        lastName: user.lastName,
+        roles: user.roles,
+      };
+      return res.redirect('/admin/products');
+    }
+
     req.session.user = {
       id: user._id,
       firstName: user.firstName,
@@ -22,7 +31,7 @@ exports.signInUser = async (req, res) => {
     req.session.cart = user.cart || [];
 
     req.flash('success', `Welcome back, ${user.firstName}!`);
-    res.redirect('/account');
+    res.redirect('/products');
   } catch (err) {
     console.error(err);
     req.flash('danger', 'Login failed');

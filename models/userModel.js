@@ -30,6 +30,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  roles: { type: [String], default: ['user'] },
   cart: [
     {
       productId: String,
