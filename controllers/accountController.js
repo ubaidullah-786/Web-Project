@@ -1,6 +1,6 @@
 const Order = require('../models/orderModel');
+
 exports.renderPage = async (req, res) => {
-  // Check session-based authentication
   const user = req.session.user;
   if (!user) {
     req.flash('danger', 'Please log in to view your account');

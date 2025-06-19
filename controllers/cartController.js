@@ -11,7 +11,6 @@ exports.addCartProduct = async (req, res) => {
         { new: false }
       );
     }
-
     const prod = await Product.findById(req.params.id).lean();
     if (!prod) return res.status(404).json({ error: 'Product not found' });
 
@@ -27,6 +26,14 @@ exports.addCartProduct = async (req, res) => {
         price: prod.price,
         qty: 1,
       });
+    }
+
+    if (req.session.user) {
+      await User.findByIdAndUpdate(
+        req.session.user.id,
+        { cart: req.session.cart },
+        { new: false }
+      );
     }
 
     const message = `"${prod.title}" added to cart`;

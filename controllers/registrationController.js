@@ -21,7 +21,9 @@ exports.register = async (req, res) => {
 
     req.session.user = {
       id: user._id,
-      name: user.firstName,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
     };
 
     req.flash('success', `Welcome, ${user.firstName}!`);
